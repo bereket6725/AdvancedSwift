@@ -79,19 +79,17 @@ struct Archer: Fighter{
     typealias Enemy = Soldier
 }
 
-
 //Now create a generic struct to express the opposing camps of the fighters and suppose that 
 //each camp may contain a spy
 struct Camp<T: Fighter>{
-    let spy: T.Enemy//<-- The dot syntax mentioned from before
+    var spy: T.Enemy?//<-- The dot syntax mentioned from before
 }
 //if the Camp is of Type Soldier, the spy is an archer and if the Camp is an Archer the spy is a Soldier
-//Now have clearly defined the relationship without explicitly stating it, nice! 
+//Now have clearly defined the relationship without explicitly stating it, nice!
 
-
-
-
-
+//we have made it so that our code will only compile if spy's are made to be Archers
+var c = Camp<Soldier>()
+c.spy = Archer()
 
 
 
