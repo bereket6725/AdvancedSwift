@@ -22,11 +22,11 @@ func fizzbuzz (number: Int)->String {
 }
 
 
-fizzbuzz(15)
+fizzbuzz(number: 15)
 
-fizzbuzz(9)
+fizzbuzz(number: 9)
 
-fizzbuzz(8)
+fizzbuzz(number: 8)
 
 
 
