@@ -57,5 +57,49 @@ struct HolderOfTwoOfTheSameThings<T>{
         self.secondThing = thingTwo
     }
 }
+//ASSOCIATED TYPE CHAINS 
+//When a generic placeholder is constrained to a generic protocol with an associated type you can refer
+//to that type using the dot notation chan: The placeholder name, a dot and the associated type name
+//EXAMPLE:
+//You have a fighting game with soldiers and archers.
+//Soldiers and archers are enemies.
+//Soldiers and Archers are structs that conform to the Fighter protocol that has an "enemy" associated
+//type, that itself is constrained to be a fighter
+//our fighter will inherit from a "SuperFighter" protocol because associated types cant refer to itself
+protocol SuperFighter{}
+protocol Fighter: SuperFighter{
+    associatedtype Enemy: SuperFighter
+}
+
+struct Soldier: Fighter{
+    typealias Enemy = Archer
+}
+
+struct Archer: Fighter{
+    typealias Enemy = Soldier
+}
+
+
+//Now create a generic struct to express the opposing camps of the fighters and suppose that 
+//each camp may contain a spy
+struct Camp<T: Fighter>{
+    let spy: T.Enemy//<-- The dot syntax mentioned from before
+}
+//if the Camp is of Type Soldier, the spy is an archer and if the Camp is an Archer the spy is a Soldier
+//Now have clearly defined the relationship without explicitly stating it, nice! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
