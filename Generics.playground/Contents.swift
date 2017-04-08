@@ -92,6 +92,30 @@ var c = Camp<Soldier>()
 c.spy = Archer()
 
 
+//ADDITIONAL CONSTRAINTS 
+// A regular type constraint limits the eligible types that resolve our placeholder to a single type
+//But we could restrict it even further such as below:
+
+protocol Flyable{
+}
+protocol Walkable{
+}
+
+class Dog{
+}
+class FlyingDog: Dog, Flyable{
+}
+
+//Below is a protocol with more restrictions than just one type 
+//The associated type T can only be resolved by something that conforms to both Flyable and Walkable 
+//The associated type U can only be resolved by something that is of type Dog(or its subclasses) 
+// and conforms to Flyable
+
+protocol Generic{
+    associatedtype T : Flyable, Walkable
+    associatedtype U : Dog, Flyable
+}
+
 
 
 
