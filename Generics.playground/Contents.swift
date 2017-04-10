@@ -17,7 +17,7 @@ let string = Optional.some("howdy")
 let number = Optional.some(1)
 
 
-//In Swift when a protocol refers to "Self" it becomes generic 
+//In Swift when a protocol refers to "Self" it becomes generic.
 //Self becomes a placeholder for "type of the adopter"
 //example:
 protocol Flier{
@@ -29,7 +29,7 @@ protocol Flier{
 
 protocol Canine{
     associatedtype Other
-    func flockTogetherWith(_ f: Other)
+    func huntTogetherWith(_ f: Other)
     func mateWith(_ f: Other)
 }
 //An adopter will declare some particular type where the generic uses the associated type name thus,
@@ -38,7 +38,7 @@ protocol Canine{
 //protocols function parameters, we have resolved the generic
 //ex:
 struct Wolf: Canine{
-    func flockTogetherWith(_ f: Wolf) {
+    func huntTogetherWith(_ f: Wolf) {
     }
     func mateWith(_ f: Wolf) {
     }
@@ -59,32 +59,48 @@ struct HolderOfTwoOfTheSameThings<T>{
 }
 //ASSOCIATED TYPE CHAINS 
 //When a generic placeholder is constrained to a generic protocol with an associated type you can refer
-//to that type using the dot notation chan: The placeholder name, a dot and the associated type name
+//to that type using the dot notation chain: The placeholder name, a dot and the associated type name
 //EXAMPLE:
 //You have a fighting game with soldiers and archers.
 //Soldiers and archers are enemies.
 //Soldiers and Archers are structs that conform to the Fighter protocol that has an "enemy" associated
 //type, that itself is constrained to be a fighter
 //our fighter will inherit from a "SuperFighter" protocol because associated types cant refer to itself
-protocol SuperFighter{}
+protocol SuperFighter{associatedtype Weapon: Wieldable}
 protocol Fighter: SuperFighter{
     associatedtype Enemy: SuperFighter
+    func steal(weapon: Self.Enemy.Weapon, from: Self.Enemy)
+}
+
+protocol Wieldable{
+}
+struct Sword: Wieldable{
+}
+struct Bow: Wieldable{
 }
 
 struct Soldier: Fighter{
     typealias Enemy = Archer
+    typealias Weapon = Sword
+    func steal(weapon: Bow, from: Archer){}
+
 }
 
 struct Archer: Fighter{
     typealias Enemy = Soldier
+    typealias Weapon = Bow
+    func steal(weapon: Sword, from: Soldier){}
+
 }
+
 
 //Now create a generic struct to express the opposing camps of the fighters and suppose that 
 //each camp may contain a spy
 struct Camp<T: Fighter>{
     var spy: T.Enemy?//<-- The dot syntax mentioned from before
 }
-//if the Camp is of Type Soldier, the spy is an archer and if the Camp is an Archer the spy is a Soldier
+//if the Camp is of type "Soldier", the spy is an archer.  If the Camp is of type "Archer," 
+//the spy is a Soldier
 //Now have clearly defined the relationship without explicitly stating it, nice!
 
 //we have made it so that our code will only compile if spy's are made to be Archers
@@ -110,11 +126,11 @@ class FlyingDog: Dog, Flyable{
 //The associated type T can only be resolved by something that conforms to both Flyable and Walkable 
 //The associated type U can only be resolved by something that is of type Dog(or its subclasses) 
 // and conforms to Flyable
-
 protocol Generic{
     associatedtype T : Flyable, Walkable
     associatedtype U : Dog, Flyable
 }
+
 
 
 
